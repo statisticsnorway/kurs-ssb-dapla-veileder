@@ -1,5 +1,5 @@
 import os
-from IPython.core.display import HTML
+from IPython.core.display import HTML, Markdown
 
 def search_text_in_notes(keyword, root_dir, ignore=""):
     result = []
@@ -24,7 +24,7 @@ def search_text_in_notes(keyword, root_dir, ignore=""):
                                 continue
                             # if the keyword exists on the current line create a HTML-objekt with a link
                             if keyword in line:  
-                                result.append(HTML(f"""<a href="{file_path}">{file_path}</a>"""))
+                                result.append(Markdown(f"""<a href="{file_path}">{file_path}</a><br>{line}"""))
                                 # no need to iterate over the rest of the file
                                 break
                 # ignore read and permission errors
