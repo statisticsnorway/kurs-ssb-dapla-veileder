@@ -1,5 +1,7 @@
 import os
-from IPython.core.display import HTML, Markdown
+from IPython.core.display import display, HTML, Markdown
+from IPython.display import clear_output
+from ipywidgets import interact, widgets
 
 def search_text_in_notes(keyword, root_dir, ignore=""):
     result = []
@@ -31,3 +33,26 @@ def search_text_in_notes(keyword, root_dir, ignore=""):
                 except (IOError, OSError):
                     pass
     return result
+
+def handle_submit(sender):
+    with result_field:
+        result_field.clear_output()
+        result = search_text_in_notes(sender.value,root_dir,ignore)
+        if not result:
+            display(f"Vi finner dessverre ingen resultater når du søker etter {sender.value}")
+        else:
+            for file in result:
+                display(file)
+
+root_dir = "."
+ignore = "-checkpoint.ipynb"
+
+input_field = widgets.Text(
+    value='',
+    description='Søk i veilder:',
+    disabled=False
+)
+result_field = widgets.Output(layout={'border': '1px solid black'})
+display(input_field, result_field)
+
+input_field.on_submit(handle_submit)
